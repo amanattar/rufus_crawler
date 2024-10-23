@@ -1,4 +1,4 @@
-name: rufus
+name: rufus-crawler
 channels:
   - defaults
 dependencies:
