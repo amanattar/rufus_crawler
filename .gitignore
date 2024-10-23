@@ -1,0 +1,20 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.so
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Conda environment
+env/
+rufus-crawler/
+
+# Installed packages and virtual environments
+.venv/
+*.egg-info/
+.env
+.DS_Store
+
+# Log files
+*.log
