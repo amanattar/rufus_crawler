@@ -12,66 +12,97 @@ Features
 *   **Filtered content**: Uses OpenAI's GPT models to filter and refine the content based on user-provided instructions.
 *   **Output in JSON format**: Final filtered content is saved in a `filtered_data.json` file.
 
-Requirements
+Installation
 ------------
 
-To install the dependencies for this project, use the provided `requirements.yaml` file for setting up a `conda` environment.
+You can install the package directly from PyPI:
 
-### Install the Dependencies
-
-1.  **Install Conda** if you haven't already, then create a new environment using `requirements.yaml`:
-    
-    ```bash
-    conda env create -f requirements.yaml
-    conda activate rufus-crawler
-    ```
-    
-2.  **Install the Rufus Crawler package** in editable mode for development:
-    
-    ```bash
-    pip install -e .
-    ```
-    
-
-### Project Structure
-
-```python
-rufus_crawler/
-├── rufus/
-│   ├── client.py             # Main RufusClient class
-│   ├── filter.py             # ContentFilter class
-├── scripts/
-│   ├── run_rufus.py          # Script to execute the crawler
-├── crawled_data/             # Folder to store intermediate crawled data
-├── filtered_data.json        # Final output after filtering
-├── requirements.yaml         # Conda environment dependencies
-├── setup.py                  # Project setup for pip installation
-└── README.md                 # Project documentation (this file)
+```bash
+pip install rufus_crawler
 ```
 
-Setup
+Example Usage
+-------------
+
+```python
+from rufus import RufusClient, ContentFilter
+
+openai_api_key = "your_openai_api_key"
+url = "https://example.com"
+instructions = "Find information about product features and customer FAQs."
+
+client = RufusClient(openai_api_key)
+client.crawl(url, depth=2)
+crawled_data = client.convert_txt_to_json()
+
+content_filter = ContentFilter(openai_api_key)
+filtered_data = content_filter.filter_content(instructions, crawled_data)
+content_filter.save_filtered_data(filtered_data)
+```
+
+Project Structure
+-----------------
+
+```bash
+rufus_crawler/
+├── rufus/
+│   ├── client.py            # Main RufusClient class
+│   ├── content_filter.py    # ContentFilter class
+│   ├── config.py            # Configuration settings
+│   ├── utils.py             # Utility functions
+├── scripts/
+│   ├── run_rufus.py         # Main script to run the crawler
+├── crawled_data/            # Directory to store intermediate crawled data
+├── filtered_data.json       # Final output after filtering
+├── requirements.yaml        # Conda environment dependencies
+├── setup.py                 # Project setup for pip installation
+└── README.md                # Project documentation (this file)
+```
+
+Setting up the Environment
+--------------------------
+
+Use the provided `requirements.yaml` file to set up a Conda environment:
+
+1.  **Clone the repository**:
+
+```bash
+git clone https://github.com/yourusername/rufus_crawler.git
+cd rufus_crawler
+```
+
+2.  **Install Conda** if you haven't already, and then create a new environment:
+
+```bash
+conda env create -f requirements.yaml
+conda activate rufus-crawler
+```
+
+3.  **Install the Rufus Crawler package** in editable mode for development:
+
+```bash
+pip install -e .
+```
+
+Usage
 -----
 
-To configure the Rufus Crawler, you will need an OpenAI API key.
+To configure the Rufus Crawler, you will need an OpenAI API key:
 
 1.  **OpenAI API Key**: Obtain an API key from [OpenAI](https://platform.openai.com/signup/) if you don't have one.
-    
-2.  Edit the `run_rufus.py` script to add your OpenAI API key, target URL, and instructions.
-    
-    In `scripts/run_rufus.py`:
-    
-    ```python
-    openai_api_key = "your_openai_api_key"  # Replace with your OpenAI API key
-    url = "https://www.uta.edu/admissions/apply/graduate"
-    instructions = "We're making a chatbot for graduate admission process for UTA"
-    ```
-    
+2.  Edit the `run_rufus.py` script or your custom Python file to add your OpenAI API key, target URL, and instructions.
+
+```python
+openai_api_key = "your_openai_api_key"  # Replace with your OpenAI API key
+url = "https://www.uta.edu/admissions/apply/graduate"
+instructions = "We're making a chatbot for graduate admission process for UTA"
+```
+
 3.  Run the crawler:
-    
-    ```bash
-    python scripts/run_rufus.py
-    ```
-    
+
+```bash
+python scripts/run_rufus.py
+```
 
 Workflow
 --------
@@ -94,38 +125,6 @@ Workflow
 ### 4\. Cleanup
 
 *   After successful filtering, all intermediate `.txt` files and directories are deleted, leaving only `filtered_data.json`.
-
-Example Output
---------------
-
-```json
-[
-    {
-        "URL": "https://www.uta.edu/admissions/apply/graduate",
-        "content": "GPT-filtered content related to the admission process."
-    },
-    {
-        "URL": "https://www.uta.edu/admissions/contact",
-        "content": "GPT-filtered content providing contact details for admissions."
-    }
-]
-```
-
-Cleaning Up
------------
-
-After execution, the script automatically deletes the intermediate `.txt` files and directories, leaving only the `filtered_data.json` file with the relevant content.
-
-Known Issues
-------------
-
-*   **Dynamic Content**: Some dynamic content may take longer to load, so increasing the sleep time in the `selenium_get_page_content()` method might help if certain content is missing.
-*   **Rate Limiting**: OpenAI has rate limits, so ensure you have adequate API limits or handle API exceptions gracefully.
-
-Contributing
-------------
-
-Contributions are welcome! If you'd like to contribute to this project, feel free to fork the repository and submit a pull request.
 
 License
 -------
