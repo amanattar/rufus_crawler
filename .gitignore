@@ -9,6 +9,8 @@ __pycache__/
 # Conda environment
 env/
 rufus-crawler/
+build/
+dist/
 
 # Installed packages and virtual environments
 .venv/
