@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="rufus_crawler",  # Name of your package on PyPI
-    version="0.1.0",
+    version="0.1.1",
     description="A web crawler and content filtering tool using OpenAI.",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
